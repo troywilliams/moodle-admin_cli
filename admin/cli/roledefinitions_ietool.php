@@ -53,7 +53,7 @@ if ($options['import'] && $options['export']) {
     util_cli_error('Cannot export and import in same operation, sorry.');
 }
 // Get system context will be used throughtout script
-$systemcontext = get_context_instance(CONTEXT_SYSTEM);
+$systemcontext = context_system::instance();
 // Export
 if ($options['export']) {
     $roleoptions = array();
@@ -188,9 +188,8 @@ if ($options['import']) {
                 mtrace('setting capability: '.$cap->name);
                 assign_capability($cap->name, $cap->permission, $existingrole->id, $systemcontext->id, true);
             }
-            mark_context_dirty($systemcontext->path);
+            context_system::instance()->mark_dirty();
             mtrace($existingrole->name.' import finished');
-
         } else {
             $prompt = 'Create role '.$roleimport->name.'? type y (means yes) or n (means no)';
             $input = util_cli_input($prompt, '', array('n', 'y'));
@@ -208,7 +207,7 @@ if ($options['import']) {
                 mtrace('setting capability: '.$cap->name);
                 assign_capability($cap->name, $cap->permission, $roleimport->id, $systemcontext->id, true);
             }
-            mark_context_dirty($systemcontext->path);
+            context_system::instance()->mark_dirty();
             mtrace($roleimport->name.' import finished');
         }
     }
